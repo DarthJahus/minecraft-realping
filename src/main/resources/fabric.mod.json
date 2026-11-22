@@ -1,0 +1,27 @@
+{
+	"schemaVersion": 1,
+	"id": "realping",
+	"version": "${version}",
+	"name": "RealPing",
+	"description": "Measures real RTT between Minecraft client and server using the game connection only.",
+	"authors": [
+		"RealPing"
+	],
+	"contact": {},
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.jahus.realping.RealPing"
+		],
+		"client": [
+			"net.jahus.realping.RealPingClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
