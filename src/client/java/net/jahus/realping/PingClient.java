@@ -59,7 +59,7 @@ public final class PingClient {
 		pendingId.set(-1);
 		running.set(true);
 
-		PingCsvLogger.openFor(serverAddress);
+		if (PingConfig.logToCSV) PingCsvLogger.openFor(serverAddress);
 
 		intervalTask = SCHEDULER.scheduleAtFixedRate(PingClient::trySend, 0, PingConfig.intervalMs, TimeUnit.MILLISECONDS);
 		RealPing.LOGGER.info("Ping measurement started for {}", serverAddress);
@@ -73,7 +73,7 @@ public final class PingClient {
 		}
 		cancelTimeout();
 		pendingId.set(-1);
-		PingCsvLogger.close();
+		if (PingConfig.logToCSV) PingCsvLogger.close();
 		RealPing.LOGGER.info("Ping measurement stopped");
 	}
 
@@ -101,7 +101,7 @@ public final class PingClient {
 		if (!pendingId.compareAndSet(id, -1)) return;
 		lost.incrementAndGet();
 		RealPing.LOGGER.info("Ping request {} lost (no response in {} ms)", id, PingConfig.timeoutMs);
-		PingCsvLogger.logLoss();
+		if (PingConfig.logToCSV) PingCsvLogger.logLoss();
 	}
 
 	public static void onResponse(long id) {
@@ -117,7 +117,7 @@ public final class PingClient {
 		lastPing = rttMs;
 		recomputeStats();
 
-		PingCsvLogger.log(rttMs);
+		if (PingConfig.logToCSV) PingCsvLogger.log(rttMs);
 	}
 
 	private static void cancelTimeout() {
